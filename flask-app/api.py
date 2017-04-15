@@ -1,11 +1,13 @@
 import flask 
 import flask.ext.sqlalchemy
 import flask.ext.restless
+import os
 
 # Create the Flask application and the Flask-SQLAlchemy object.
 app = flask.Flask(__name__, static_url_path="")
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
 db = flask.ext.sqlalchemy.SQLAlchemy(app)
 
 @app.route('/')
@@ -41,27 +43,27 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.Unicode)
 
-class PostedMessage(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    message = db.Column(db.Unicode)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
-    park_id = db.Column(db.Integer, db.ForeignKey('park.id'))
-    posted_on = db.Column(db.DateTime)
-    user = db.relationship('User', backref=db.backref('user',
-                                                         lazy='dynamic'))
-    activity = db.relationship('Activity', backref=db.backref('activity',
-                                                         lazy='dynamic'))
-    park = db.relationship('Park', backref=db.backref('park',
-                                                         lazy='dynamic'))
+# class PostedMessage(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     message = db.Column(db.Unicode)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+#     activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+#     park_id = db.Column(db.Integer, db.ForeignKey('park.id'))
+#     posted_on = db.Column(db.DateTime)
+#     user = db.relationship('User', backref=db.backref('user',
+#                                                          lazy='dynamic'))
+#     activity = db.relationship('Activity', backref=db.backref('activity',
+#                                                          lazy='dynamic'))
+#     park = db.relationship('Park', backref=db.backref('park',
+#                                                          lazy='dynamic'))
 
-class PostedResponse(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    response = db.Column(db.Unicode)
-    message_id = db.Column(db.Integer, db.ForeignKey('message.id'))
-    responded_on = db.Column(db.DateTime)
-    message_responded_to = db.relationship('PostedMessage', backref=db.backref('postedmessage',
-                                                         lazy='dynamic'))
+# class PostedResponse(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     response = db.Column(db.Unicode)
+#     message_id = db.Column(db.Integer, db.ForeignKey('message.id'))
+#     responded_on = db.Column(db.DateTime)
+#     message_responded_to = db.relationship('PostedMessage', backref=db.backref('postedmessage',
+#                                                          lazy='dynamic'))
 
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
