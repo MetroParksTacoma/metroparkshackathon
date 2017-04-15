@@ -150,6 +150,8 @@ td > span.glyphicon {
   color: #03a0ab;
 }
 
-
+li > input {
+  margin-top: 10px;
+}
 
 
