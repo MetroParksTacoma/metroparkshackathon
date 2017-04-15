@@ -1,12 +1,18 @@
-import flask
+import flask 
 import flask.ext.sqlalchemy
 import flask.ext.restless
 
 # Create the Flask application and the Flask-SQLAlchemy object.
-app = flask.Flask(__name__)
+app = flask.Flask(__name__, static_url_path="")
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = flask.ext.sqlalchemy.SQLAlchemy(app)
+
+@app.route('/')
+def main():
+    return flask.render_template('index.html')
+
+
 
 # Create your Flask-SQLALchemy models as usual but with the following two
 # (reasonable) restrictions:
